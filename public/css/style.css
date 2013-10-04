@@ -22,7 +22,13 @@ body {
 #homepage {
     background-color: #2D3538;
     text-align: center;
-    padding: 100px 0;
+    padding: 100px 0 250px;
+}
+
+#footer {
+    text-align: center;
+    min-height: 25px;
+    padding-top: 20px;
 }
 
 /* styles */
@@ -62,6 +68,21 @@ body {
 
 #header .button:hover {
     background: none repeat scroll 0 0 #4E5E62;
+}
+
+#footer .nav li {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#footer .nav a {
+    text-decoration: none;
+    color: #777777;
+}
+
+#footer .nav a:hover {
+    color: #2D3538;
+    text-decoration: underline;
 }
 
 #homepage h1 {
