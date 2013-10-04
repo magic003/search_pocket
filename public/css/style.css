@@ -19,12 +19,19 @@ body {
     padding: 14px 0;
 }
 
+#homepage {
+    background-color: #2D3538;
+    text-align: center;
+    padding: 100px 0;
+}
+
 /* styles */
 .logo, .logo a {
     font-size: 22px;
     color: #FFFFFF;
     text-decoration: none;
     display: inline;
+    font-family: 'Open Sans';
 }
 
 #header .nav {
@@ -56,3 +63,44 @@ body {
 #header .button:hover {
     background: none repeat scroll 0 0 #4E5E62;
 }
+
+#homepage h1 {
+    color: #FFFFFF;
+    letter-spacing: 2px;
+    font-size: 45px;
+    font-family: 'Open Sans', sans-serif;
+    text-shadow: 0 2px 2px #111111;
+    margin: 20px 0 100px;
+}
+
+.connect_button {
+    background-color: #60B044;
+    background-image: linear-gradient(#8ADD6D, #60B044);
+    background-repeat: repeat-x;
+    text-decoration: none;
+    border: 0 none;
+    padding: 11px 30px;
+    border-radius: 5px 5px 5px 5px;
+    font-size: 22px;
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    text-align: center;
+    outline: medium none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.connect_button:hover {
+    background-color: #569E3D;
+    background-image: linear-gradient(#79D858, #569E3D);
+    background-repeat: repeat-x;
+    border-color: #4A993E;
+}
+
+.connect_button:focus {
+    border-color: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 0 12px rgba(255, 255, 255, 0.75);
+}
+
