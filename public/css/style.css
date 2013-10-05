@@ -22,13 +22,22 @@ body {
 #homepage {
     background-color: #2D3538;
     text-align: center;
-    padding: 100px 0 250px;
+    padding: 100px 0;
+    height: 355px;
 }
 
 #footer {
     text-align: center;
     min-height: 25px;
-    padding-top: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#search {
+    text-align: center;
+    padding: 100px 0 250px;
 }
 
 /* styles */
@@ -91,7 +100,7 @@ body {
     font-size: 45px;
     font-family: 'Open Sans', sans-serif;
     text-shadow: 0 2px 2px #111111;
-    margin: 20px 0 100px;
+    padding: 20px 0 100px;
 }
 
 .connect_button {
@@ -125,3 +134,34 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 0 12px rgba(255, 255, 255, 0.75);
 }
 
+#search .searchbox {
+    outline: medium none;
+    border: 1px solid #777777;
+    font-size: 16px;
+    padding: 5px 10px;
+    margin: 0 10px;
+}
+
+#search .searchbox:focus {
+    border: 1px solid green;
+}
+
+#search .searchbutton {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333333;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 2px 2px 2px 2px;
+    cursor: pointer;
+    text-align: center;
+    padding: 7px;
+    background-color: #F5F5F5;
+    background-image: linear-gradient(#F5F5F5, #F1F1F1);
+}
+
+#search .searchbutton:hover {
+    background-color: #F8F8F8;
+    background-image: linear-gradient(#F8F8F8, #F1F1F1);
+    border-color: #C6C6C6;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}

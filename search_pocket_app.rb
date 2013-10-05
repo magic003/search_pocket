@@ -26,7 +26,15 @@ class SearchPocketApp < Sinatra::Base
   end
 
   get '/' do
-    haml :index, :locals => { auth_path: OmniAuth.config.path_prefix + '/pocket' }
+    haml :index
+  end
+
+  get '/auth/:provider/callback' do |p|
+    haml :search
+  end
+
+  get '/auth/failure' do
+    haml "failed!"
   end
 
   # Run this application
