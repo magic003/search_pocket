@@ -10,4 +10,12 @@ module SessionHelper
   def sign_out
     session[:uid] = nil
   end
+
+  def save_current_user(user) 
+    session[:user] = user
+  end
+
+  def current_user
+    session[:user]
+  end
 end

@@ -4,8 +4,7 @@
       %a{href: '/'} SearchPocket
     - if signed_in?
       #user_session
-        // TODO read username fro current user
-        %span.name magic003
+        %span.name= current_user.name
         .dropdown
           %ul
             %li

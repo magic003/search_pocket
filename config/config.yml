@@ -2,8 +2,20 @@ development:
   pocket:
     client_id: ''
     client_secret: ''
+  db:
+    host: 'localhost'
+    port: 3306
+    database: ''
+    username: ''
+    password: ''
 
 production:
   pocket:
     client_id: ''
     client_secret: ''
+  db:
+    host: 'localhost'
+    port: 3306
+    database: ''
+    username: ''
+    password: ''
