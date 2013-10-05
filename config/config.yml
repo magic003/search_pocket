@@ -1,0 +1,9 @@
+development:
+  pocket:
+    client_id: ''
+    client_secret: ''
+
+production:
+  pocket:
+    client_id: ''
+    client_secret: ''
