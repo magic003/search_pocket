@@ -52,7 +52,6 @@ class SearchPocketApp < Sinatra::Base
     else
       user.update({login_at: DateTime.now})
     end
-    save_current_user(user)
     redirect to('/')
   end
 

@@ -11,11 +11,7 @@ module SessionHelper
     session[:uid] = nil
   end
 
-  def save_current_user(user) 
-    session[:user] = user
-  end
-
   def current_user
-    session[:user]
+    User[:name => session[:uid]]
   end
 end
