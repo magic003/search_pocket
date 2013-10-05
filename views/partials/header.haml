@@ -2,7 +2,16 @@
   .container
     %h1.logo
       %a{href: '/'} SearchPocket
-    %ul.nav
-      %li
-        %a{href: '/auth/pocket', class: 'button'} Login with Pocket
+    - if signed_in?
+      #user_session
+        // TODO read username fro current user
+        %span.name magic003
+        .dropdown
+          %ul
+            %li
+              %a{href: '/logout'} Logout
+    - else
+      %ul.nav
+        %li
+          %a{href: '/auth/pocket', class: 'button'} Login with Pocket
 

@@ -18,7 +18,7 @@ class SearchPocketApp < Sinatra::Base
   set :views, ['views/layouts', 'views/pages', 'views/partials']
   set :haml, {:format => :html5, :layout => :layout }
 
-  helpers ViewDirectoriesHelper
+  helpers ViewDirectoriesHelper, SessionHelper
 
   pocket = settings.pocket
   use OmniAuth::Builder do
@@ -26,15 +26,28 @@ class SearchPocketApp < Sinatra::Base
   end
 
   get '/' do
-    haml :index
+    if signed_in? 
+      haml :search
+    else # user not logged in
+      haml :index
+    end
   end
 
   get '/auth/:provider/callback' do |p|
-    haml :search
+    uid = env['omniauth.auth'].uid
+    token = env['omniauth.auth'].token   
+    sign_in(uid)
+    # TODO create a user if it is a new user
+    redirect to('/')
   end
 
   get '/auth/failure' do
     haml "failed!"
+  end
+
+  get '/logout' do
+    sign_out
+    redirect to('/');
   end
 
   # Run this application
