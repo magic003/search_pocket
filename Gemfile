@@ -8,4 +8,4 @@ gem 'mysql2'
 gem 'omniauth'
 gem 'omniauth-pocket'
 
-
+gem 'ruby-readability', :require => 'readability'
