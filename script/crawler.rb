@@ -6,12 +6,15 @@
 # Author::    Minjie Zha (mailto:minjiezha@gmail.com)
 # Copyright:: Copyright (c) 2013-2014 Minjie Zha
 
+$:.unshift(File.dirname(__FILE__)+'/../lib') unless
+  $:.include?(File.dirname(__FILE__)+'/../lib') || $:.include?(File.expand_path(File.dirname(__FILE__)+'/../lib'))
+
 require 'optparse'
-require 'yaml'
-require 'sequel'
 require 'net/http'
 require 'uri'
 require 'json'
+
+require 'search_pocket'
 
 ### function definitions ###
 
@@ -20,23 +23,6 @@ def check_arguments!(options)
     puts "Error: no config file is provided."
     exit
   end
-end
-
-def load_config_file(options)
-  yaml = YAML::load(File.open(options[:config]))
-  yaml[options[:env]]
-end
-
-def connect_db(db_config)
-  Sequel.connect("mysql2://#{db_config['username']}:#{db_config['password']}@#{db_config['host']}:#{db_config['port']}/#{db_config['database']}")
-end
-
-def require_models()
-  Dir[File.join(File.expand_path(File.dirname(__FILE__)), "../app/models/*.rb")].each { |file| require file }
-end
-
-def disconnect_db(db)
-  db.disconnect
 end
 
 def retrieve_links_by_user(user, config)
@@ -118,15 +104,21 @@ end.parse!
 
 check_arguments!(options)
 
-config = load_config_file(options)
+config = SearchPocket::Utils::config_file(options[:config], options[:env])
 if config.nil?
   puts "Error: failed to load config file."
   exit
 end
 
-db = connect_db(config['db'])
-require_models()
+db_config = config['db']
+db = SearchPocket::Utils::sequel_connect("mysql2", db_config['username'],
+                                       db_config['password'],
+                                       db_config['host'],
+                                       db_config['port'],
+                                       db_config['database'])
+
+Dir[File.join(File.expand_path(File.dirname(__FILE__)), "../app/models/*.rb")].each { |file| require file }
 
 retrieve_links(options, config)
 
-disconnect_db(db)
+SearchPocket::Utils::sequel_disconnect(db)
