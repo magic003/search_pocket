@@ -1,6 +1,6 @@
 Sequel.migration do
   up do
-    # 1 is parsed, -1 is error
+    # 1 is parsed, 2 is indexed, -1 is error
     add_column :links, :status, Integer, :default => 0
   end
 
