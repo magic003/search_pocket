@@ -9,6 +9,9 @@
 require 'optparse'
 require 'yaml'
 require 'sequel'
+require 'net/http'
+require 'uri'
+require 'json'
 
 ### function definitions ###
 
@@ -36,8 +39,36 @@ def disconnect_db(db)
   db.disconnect
 end
 
-def retrieve_links_by_user(user, options)
-  puts user.name
+def retrieve_links_by_user(user, config)
+  uri = URI('https://getpocket.com/v3/get')
+  res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) do |http|
+    req = Net::HTTP::Post.new(uri.request_uri,
+                             initheader={'Content-Type' => 'application/json'})
+    payload = { 'consumer_key' => config['pocket']['client_secret'],
+                'access_token' => user.token,
+                'state' => 'all'
+              }
+    payload['since'] = user.since unless user.since.nil?
+    req.body = payload.to_json
+    http.request(req)
+  end
+
+  if res.code.to_i == 200
+    json = JSON.parse(res.body)
+    if json['list'].size > 0
+      json['list'].each_value do |item|
+        Link.find_or_create(item_id: item['item_id']) do |l|
+          l.url = item['resolved_url'] || item['given_url']
+          l.given_title = item['given_title']
+          l.resolved_title = item['resolved_title']
+          l.favorite = item['favorite'].to_i
+          l.excerpt = item['excerpt']
+          l.user_id = user.id
+        end
+      end
+    end
+    user.update(since: json['since'])
+  end
 end
 
 def retrieve_links(options, config)
@@ -45,7 +76,7 @@ def retrieve_links(options, config)
   users = (names.nil? || names.empty?) ? User.all : User.where(:name => names)
 
   users.each do |user|
-    retrieve_links_by_user(user, options)
+    retrieve_links_by_user(user, config)
   end
 end
 
