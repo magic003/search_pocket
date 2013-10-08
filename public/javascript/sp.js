@@ -12,4 +12,11 @@ $(document).ready(function() {
 
     $('html').click(hideDropdown);
     $('#user_session').click(showDropdown);
+
+    $('#search form').submit(function(event) {
+        if($.trim($('#search .searchbox').val()).length > 0) {
+            return true;
+        }
+        return false;
+    });
 });
