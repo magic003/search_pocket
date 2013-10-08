@@ -5,6 +5,8 @@ require 'omniauth'
 require 'omniauth-pocket'
 require 'sequel'
 
+require_relative 'vendor/sphinx/sphinx'
+
 class SearchPocketApp < Sinatra::Base
   # version number
   VERSION = '0.0.1'
@@ -69,6 +71,17 @@ class SearchPocketApp < Sinatra::Base
   get '/logout' do
     sign_out
     redirect to('/');
+  end
+
+  get '/search' do
+    q = params[:q]
+    if q.nil? || q.empty?
+      haml :search
+    else
+      client = Sphinx::Client.new
+      results = client.Query(q)
+      haml results['total'].to_s
+    end
   end
 
   # Run this application
