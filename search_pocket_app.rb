@@ -51,7 +51,8 @@ class SearchPocketApp < Sinatra::Base
                           :login_at => DateTime.now})
       # spawn a process to retrieve and parse links
       pid = Process.spawn("script/crawler.rb -c config/config.yml -u #{user.name} "\
-                          "&& script/parser.rb -c config/config.yml",
+                          "&& script/parser.rb -c config/config.yml "\
+                          "&& script/indexer.rb -c config/sphinx.conf",
                    :chdir => File.expand_path(File.dirname(__FILE__)))
       Process.detach(pid)
     else
