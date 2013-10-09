@@ -4,8 +4,7 @@ require 'sinatra/config_file'
 require 'omniauth'
 require 'omniauth-pocket'
 require 'sequel'
-
-require_relative 'vendor/sphinx/sphinx'
+require 'riddle'
 
 class SearchPocketApp < Sinatra::Base
   # version number
@@ -75,12 +74,25 @@ class SearchPocketApp < Sinatra::Base
 
   get '/search' do
     q = params[:q]
+    page = params[:p] || 1
+    per_page = 10
     if q.nil? || q.empty?
       haml :search
     else
-      client = Sphinx::Client.new
-      results = client.Query(q)
-      haml results['total'].to_s
+      client = Riddle::Client.new
+      client.filters << Riddle::Client::Filter.new('user_id', [current_user.id])
+      client.offset = (page.to_i - 1) * per_page
+      client.limit = per_page
+      results = client.query(q)
+      ids = results[:matches].map { |match| match[:doc] }
+      unless ids.empty?
+        links = Link.where(:id => ids)
+        docs = links.map(&:content)
+        excerpts = client.excerpts(:docs => docs, :words => q)
+        haml excerpts.inspect
+      else
+        haml 'no results'
+      end
     end
   end
 

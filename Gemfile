@@ -9,3 +9,5 @@ gem 'omniauth'
 gem 'omniauth-pocket'
 
 gem 'ruby-readability', :require => 'readability'
+
+gem 'riddle'
