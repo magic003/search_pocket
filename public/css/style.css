@@ -39,6 +39,10 @@ body {
     padding: 100px 0 250px;
 }
 
+#results {
+    padding-top: 25px;
+}
+
 /* styles */
 .logo, .logo a {
     font-size: 22px;
@@ -134,7 +138,7 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 0 12px rgba(255, 255, 255, 0.75);
 }
 
-#search .searchbox {
+.searchbox {
     outline: medium none;
     border: 1px solid #777777;
     font-size: 16px;
@@ -142,11 +146,11 @@ body {
     margin: 0 10px;
 }
 
-#search .searchbox:focus {
+.searchbox:focus {
     border: 1px solid green;
 }
 
-#search .searchbutton {
+.searchbutton {
     border: 1px solid rgba(0, 0, 0, 0.1);
     color: #333333;
     font-size: 12px;
@@ -159,7 +163,7 @@ body {
     background-image: linear-gradient(#F5F5F5, #F1F1F1);
 }
 
-#search .searchbutton:hover {
+.searchbutton:hover {
     background-color: #F8F8F8;
     background-image: linear-gradient(#F8F8F8, #F1F1F1);
     border-color: #C6C6C6;
@@ -224,4 +228,42 @@ body {
 #user_session ul a:hover {
     text-decoration: underline;
     background: none repeat scroll 0 0 rgba(255, 255, 255,0.1);
+}
+
+#results .searchbox {
+    width: 400px;
+}
+
+#stats {
+    color: #777777;
+    padding: 20px;
+}
+
+#links {
+    padding-left: 20px;
+    width: 70%;
+}
+
+#links article {
+    padding-bottom: 30px;
+}
+
+#links a {
+    color: #688b2d;
+    font-size: 16px;
+    line-height: 1.3em;
+}
+
+#links a:hover {
+    color: #7EAA37;
+}
+
+#links section {
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
 }

@@ -20,7 +20,7 @@ class SearchPocketApp < Sinatra::Base
 
   # include helpers
   Dir["./app/helpers/*.rb"].each { |file| require file }
-  helpers ViewDirectoriesHelper, SessionHelper
+  helpers ViewDirectoriesHelper, SessionHelper, LinkHelper
   # include models
   db = settings.db
   Sequel.connect("mysql2://#{db[:username]}:#{db[:password]}@#{db[:host]}:#{db[:port]}/#{db[:database]}")
@@ -86,13 +86,19 @@ class SearchPocketApp < Sinatra::Base
       results = client.query(q)
       ids = results[:matches].map { |match| match[:doc] }
       unless ids.empty?
-        links = Link.where(:id => ids)
+        links = Link.where(:id => ids).all
         docs = links.map(&:content)
-        excerpts = client.excerpts(:docs => docs, :words => q)
-        haml excerpts.inspect
+        excerpts = client.excerpts(:docs => docs, :index => 'main', :words => q)
+        links.each_index do |i|
+          links[i].excerpt = excerpts[i]
+        end
       else
-        haml 'no results'
+        links = []
       end
+      haml :results, :locals => {:q => q, 
+                                 :total => results[:total],
+                                 :time => results[:time],
+                                 :links => links}
     end
   end
 

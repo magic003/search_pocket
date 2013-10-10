@@ -43,13 +43,16 @@ def retrieve_links_by_user(user, config)
     json = JSON.parse(res.body)
     if json['list'].size > 0
       json['list'].each_value do |item|
-        Link.find_or_create(item_id: item['item_id']) do |l|
-          l.url = item['resolved_url'] || item['given_url']
-          l.given_title = item['given_title']
-          l.resolved_title = item['resolved_title']
-          l.favorite = item['favorite'].to_i
-          l.excerpt = item['excerpt']
-          l.user_id = user.id
+        url = item['resolved_url'] || item['given_url']
+        if url
+          Link.find_or_create(item_id: item['item_id']) do |l|
+            l.url = url
+            l.given_title = item['given_title'].strip
+            l.resolved_title = item['resolved_title'].strip
+            l.favorite = item['favorite'].to_i
+            l.excerpt = item['excerpt']
+            l.user_id = user.id
+          end
         end
       end
     end

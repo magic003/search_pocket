@@ -74,9 +74,16 @@ links = Link.where(status: 0)
 links.each do |l|
   begin
     page = open(l.url).read
-    l.update(content: Readability::Document.new(page).content, status: 1)
+    doc = Readability::Document.new(page)
+    l.set(content: doc.content, status: 1)
+    title = l.given_title || l.resolved_title
+    if title.nil? || title.empty?
+      l.set(resolved_title: doc.title.strip)
+    end
+    l.save
   rescue Timeout::Error, Errno::ETIMEDOUT, Exception => e
-    puts "Warning: failed to parse link: #{l.url}."
+    puts "Warning: failed to parse link: #{l.url}"
+    puts e.to_s
     l.update(status: -1)
   end
 end

@@ -1,0 +1,6 @@
+#results.container
+  = haml :searchbox, :layout => false, :locals => {:q => "#{q}"}
+  #stats= "Found #{total} results in #{time} seconds"
+  #links
+    - links.each do |l|
+      = haml :link, :layout => false, :locals => {:link => l}
