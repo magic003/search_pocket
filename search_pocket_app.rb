@@ -104,6 +104,14 @@ class SearchPocketApp < Sinatra::Base
     end
   end
 
+  get '/terms' do
+    haml :terms
+  end
+
+  get '/privacy' do
+    haml :privacy
+  end
+
   # Run this application
   run! if app_file == $0
 end
