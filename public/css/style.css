@@ -22,26 +22,24 @@ body {
     background-color: #2D3538;
     text-align: center;
     padding: 100px 0;
-    height: 360px;
+    min-height: 370px;
 }
 
 #footer {
     text-align: center;
-    min-height: 25px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    padding: 10px 0 5px;
 }
 
 #search {
     text-align: center;
-    padding: 100px 0 250px;
+    padding: 100px 0;
+    min-height: 370px;
 }
 
 #results {
     padding-top: 25px;
     padding-bottom: 30px;
+    min-height: 515px;
 }
 
 /* styles */
