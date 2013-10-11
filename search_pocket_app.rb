@@ -74,14 +74,14 @@ class SearchPocketApp < Sinatra::Base
 
   get '/search' do
     q = params[:q]
-    page = params[:p] || 1
+    page = (params[:p] || 1).to_i
     per_page = 10
     if q.nil? || q.empty?
       haml :search
     else
       client = Riddle::Client.new
       client.filters << Riddle::Client::Filter.new('user_id', [current_user.id])
-      client.offset = (page.to_i - 1) * per_page
+      client.offset = (page - 1) * per_page
       client.limit = per_page
       results = client.query(q)
       ids = results[:matches].map { |match| match[:doc] }
@@ -98,7 +98,9 @@ class SearchPocketApp < Sinatra::Base
       haml :results, :locals => {:q => q, 
                                  :total => results[:total],
                                  :time => results[:time],
-                                 :links => links}
+                                 :links => links, 
+                                 :per_page => per_page, 
+                                 :page => page}
     end
   end
 

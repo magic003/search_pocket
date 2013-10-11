@@ -41,6 +41,7 @@ body {
 
 #results {
     padding-top: 25px;
+    padding-bottom: 30px;
 }
 
 /* styles */
@@ -241,7 +242,7 @@ body {
 
 #links {
     padding-left: 20px;
-    width: 70%;
+    width: 80%;
 }
 
 #links article {
@@ -259,6 +260,16 @@ body {
 }
 
 #links section {
+    line-height: 1.3em;
+}
+
+#paginate {
+    text-align: center;
+}
+
+#paginate a {
+    color: #688b2d;
+    font-size: 16px;
 }
 
 .ellipsis {
@@ -266,4 +277,8 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
     display: block;
+}
+
+.match {
+    font-weight: bold;
 }

@@ -4,3 +4,11 @@
   #links
     - links.each do |l|
       = haml :link, :layout => false, :locals => {:link => l}
+  #paginate
+    - paginate(total, per_page) do |p|
+      - if p == page
+        %span= p
+      - else
+        %span
+          %a{href: "/search?q=#{q}&p=#{p}"}= p
+    
