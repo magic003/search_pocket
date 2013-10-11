@@ -50,6 +50,12 @@ h1, h2, h3, h4, h5 {
     padding: 40px 60px 40px 10px;
 }
 
+#error {
+    padding: 100px 50px;
+    min-height: 370px;
+    color: #333333;
+}
+
 /* styles */
 .logo, .logo a {
     font-size: 22px;
@@ -312,4 +318,15 @@ h1, h2, h3, h4, h5 {
 
 #privacy ul {
     padding-left: 20px;
+}
+
+#error h1 {
+    font-size: 72px;
+    line-height: 1.5em; 
+    padding-bottom: 50px;
+}
+
+#error p {
+    font-size: 48px;
+    padding-left: 15px;
 }

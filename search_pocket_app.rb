@@ -69,8 +69,8 @@ class SearchPocketApp < Sinatra::Base
   end
 
   get '/auth/failure' do
-    # TODO add a failure page
-    haml "failed!"
+    [400, haml(:error, :locals => 
+               { message: "Failed because of #{params[:message]}" })]
   end
 
   get '/logout' do
@@ -116,6 +116,14 @@ class SearchPocketApp < Sinatra::Base
 
   get '/privacy' do
     haml :privacy
+  end
+
+  not_found do
+    [404, haml(:error, locals: { message: "Page Not Found" })]
+  end
+
+  error do
+    [500, haml(:error, locals: { message: "Something went wrong on server"})]
   end
 
   # Run this application
