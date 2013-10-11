@@ -32,6 +32,12 @@ class SearchPocketApp < Sinatra::Base
     provider :pocket, pocket[:client_id], pocket[:client_secret]
   end
 
+  before '/search' do
+    if current_user.nil?
+      redirect to('/')
+    end
+  end
+
   # routers
 
   get '/' do
