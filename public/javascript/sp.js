@@ -19,4 +19,10 @@ $(document).ready(function() {
         }
         return false;
     });
+
+    $('.searchbox').focus(function(event) {
+        this.selectionStart = this.selectionEnd = this.value.length;
+    });
+
+    $('.searchbox').focus();
 });
