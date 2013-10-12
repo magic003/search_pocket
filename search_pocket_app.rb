@@ -63,7 +63,9 @@ class SearchPocketApp < Sinatra::Base
                    :chdir => File.expand_path(File.dirname(__FILE__)))
       Process.detach(pid)
     else
-      user.update({login_at: DateTime.now})
+      user.set(login_at: DateTime.now)
+      user.set(token: token) unless user.token.eql?(token)
+      user.save
     end
     redirect to('/')
   end
