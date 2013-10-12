@@ -13,8 +13,12 @@ require 'optparse'
 require 'net/http'
 require 'uri'
 require 'json'
+require 'logger'
 
 require 'search_pocket'
+
+# logger
+$logger = Logger.new($stdout)
 
 ### function definitions ###
 
@@ -26,6 +30,7 @@ def check_arguments!(options)
 end
 
 def retrieve_links_by_user(user, config)
+  $logger.info "Retrieving links for user #{user.name}"
   uri = URI('https://getpocket.com/v3/get')
   res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) do |http|
     req = Net::HTTP::Post.new(uri.request_uri,
@@ -57,6 +62,9 @@ def retrieve_links_by_user(user, config)
       end
     end
     user.update(since: json['since'])
+    $logger.info "#{json['list'].size} links saved"
+  else
+    $logger.error "request failed: #{res.code} #{res['X-Error']}"
   end
 end
 
@@ -113,6 +121,8 @@ if config.nil?
   exit
 end
 
+$logger = Logger.new(config['log_file'], 'monthly') if config['log_file']
+
 db_config = config['db']
 db = SearchPocket::Utils::sequel_connect("mysql2", db_config['username'],
                                        db_config['password'],
@@ -122,6 +132,8 @@ db = SearchPocket::Utils::sequel_connect("mysql2", db_config['username'],
 
 Dir[File.join(File.expand_path(File.dirname(__FILE__)), "../app/models/*.rb")].each { |file| require file }
 
+$logger.info "Start retrieving links"
 retrieve_links(options, config)
+$logger.info "Finished"
 
 SearchPocket::Utils::sequel_disconnect(db)

@@ -12,8 +12,11 @@ $:.unshift(File.dirname(__FILE__)+'/../lib') unless
 require 'optparse'
 require 'open-uri'
 require 'readability'
+require 'logger'
 
 require 'search_pocket'
+
+$logger = Logger.new($stdout)
 
 ### function definitions ###
 
@@ -61,6 +64,8 @@ if config.nil?
   exit
 end
 
+$logger = Logger.new(config['log_file'], 'monthly') if config['log_file']
+
 db_config = config['db']
 db = SearchPocket::Utils.sequel_connect("mysql2", db_config['username'],
                                          db_config['password'],
@@ -82,8 +87,8 @@ links.each do |l|
     end
     l.save
   rescue Timeout::Error, Errno::ETIMEDOUT, Exception => e
-    puts "Warning: failed to parse link: #{l.url}"
-    puts e.to_s
+    $logger.error "Warning: failed to parse link: #{l.url}"
+    $logger.error e.to_s
     l.update(status: -1)
   end
 end

@@ -15,6 +15,7 @@ class SearchPocketApp < Sinatra::Base
   config_file 'config/config.yml'
 
   enable :sessions
+  enable :logging
   set :views, ['views/layouts', 'views/pages', 'views/partials']
   set :haml, {:format => :html5, :layout => :layout }
 
@@ -57,6 +58,7 @@ class SearchPocketApp < Sinatra::Base
       user = User.create({:name => uid, :token => token, :register_at => DateTime.now,
                           :login_at => DateTime.now})
       # spawn a process to retrieve and parse links
+      logger.info "spawn a retrieval process for user #{user.name}"
       pid = Process.spawn("script/crawler.rb -c config/config.yml -u #{user.name} "\
                           "&& script/parser.rb -c config/config.yml "\
                           "&& script/indexer.rb -c config/sphinx.conf",
@@ -71,6 +73,7 @@ class SearchPocketApp < Sinatra::Base
   end
 
   get '/auth/failure' do
+    logger.error "Pocket auth failed: #{params[:message]}"
     [400, haml(:error, :locals => 
                { message: "Failed because of #{params[:message]}" })]
   end
@@ -87,16 +90,17 @@ class SearchPocketApp < Sinatra::Base
     if q.nil? || q.empty?
       haml :search
     else
+      index = 'main'
       client = Riddle::Client.new
       client.filters << Riddle::Client::Filter.new('user_id', [current_user.id])
       client.offset = (page - 1) * per_page
       client.limit = per_page
-      results = client.query(q)
+      results = client.query(q, index)
       ids = results[:matches].map { |match| match[:doc] }
       unless ids.empty?
         links = Link.where(:id => ids).all
         docs = links.map(&:content)
-        excerpts = client.excerpts(:docs => docs, :index => 'main', :words => q)
+        excerpts = client.excerpts(:docs => docs, :index => index, :words => q)
         links.each_index do |i|
           links[i].excerpt = excerpts[i]
         end
@@ -125,6 +129,7 @@ class SearchPocketApp < Sinatra::Base
   end
 
   error do
+    logger.error env['sinatra.error'].name
     [500, haml(:error, locals: { message: "Something went wrong on server"})]
   end
 

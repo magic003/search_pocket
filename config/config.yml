@@ -8,6 +8,7 @@ development:
     database: ''
     username: ''
     password: ''
+  log_file: ''
 
 production:
   pocket:
@@ -19,3 +20,4 @@ production:
     database: ''
     username: ''
     password: ''
+  log_file: ''
