@@ -12,7 +12,7 @@ module LinkHelper
   end
 
   def paginate(total, per_page)
-    pages = total / per_page + 1
+    pages = total / per_page + (total % per_page == 0 ? 0 : 1)
     pages = 10 if pages > 10  # only show the first 10 pages
     if pages > 1
       1.upto pages do |p|
