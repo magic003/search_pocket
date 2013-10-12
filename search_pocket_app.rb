@@ -43,7 +43,12 @@ class SearchPocketApp < Sinatra::Base
 
   get '/' do
     if signed_in? 
-      haml :search
+      user = current_user
+      message = nil
+      if user.since.nil? || Link.where(user_id: user.id, status: 2).empty?
+        message = 'Your links will be ready for search in several minutes.'
+      end
+      haml :search, :locals => {message: message}
     else # user not logged in
       haml :index
     end

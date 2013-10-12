@@ -1,2 +1,4 @@
 #search
+  - unless message.nil?
+    %span.notice= message
   = haml :searchbox, :layout => false, :locals => {:q => ''}

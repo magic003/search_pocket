@@ -36,8 +36,8 @@ h1, h2, h3, h4, h5 {
 
 #search {
     text-align: center;
-    padding: 100px 0;
-    min-height: 370px;
+    padding: 50px 0;
+    min-height: 470px;
 }
 
 #results {
@@ -329,4 +329,24 @@ h1, h2, h3, h4, h5 {
 #error p {
     font-size: 48px;
     padding-left: 15px;
+}
+
+#search form {
+    padding: 20px;
+    margin-top: 30px;
+}
+
+#search .searchbox {
+    width: 400px;
+}
+
+.notice {
+    padding: 10px 20px;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 1.3em;
+    background-color: rgba(240, 240, 240, 0.4);
+    background-color: #eeeeee);
+    border-radius: 5px 5px 5px 5px;
+    color: #555555;
 }
