@@ -1,0 +1,1 @@
+@hourly  cd search_pocket && script/crawler.rb -c config/config.yml && script/parser.rb -c config/config.yml && script/indexer.rb -c config/sphinx.conf
