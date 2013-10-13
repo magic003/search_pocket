@@ -3,7 +3,7 @@
     <ShortName>SearchPocket</ShortName>
     <Description>A full-text search engine for Pocket</Description>
     <Url type="text/html"
-        template="http://localhost:4567/search?q={searchTerms}" />
+        template="http://www.searchpocket.info/search?q={searchTerms}" />
     <Query role="example" searchTerms="computer" />
     <Developer>Minjie Zha</Developer>
 </OpenSearchDescription>
