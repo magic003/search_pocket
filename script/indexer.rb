@@ -42,4 +42,4 @@ end.parse!
 
 check_arguments!(options)
 
-`indexer -c #{options[:config]} delta && indexer -c #{options[:config]} --merge main delta --rotate`
+`indexer -c #{options[:config]} delta --rotate && indexer -c #{options[:config]} --merge main delta --rotate`
