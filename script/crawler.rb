@@ -50,7 +50,7 @@ def retrieve_links_by_user(user, config)
       json['list'].each_value do |item|
         url = item['resolved_url'] || item['given_url']
         if url
-          Link.find_or_create(item_id: item['item_id']) do |l|
+          Link.find_or_create(user_id: user.id, item_id: item['item_id']) do |l|
             l.url = url
             l.given_title = item['given_title'] && item['given_title'].strip
             l.resolved_title = item['resolved_title'] && item['resolved_title'].strip
@@ -69,12 +69,14 @@ def retrieve_links_by_user(user, config)
 end
 
 def retrieve_links(options, config)
+  $logger.info "Start retrieving links"
   names = options[:users]
   users = (names.nil? || names.empty?) ? User.all : User.where(:name => names)
 
   users.each do |user|
     retrieve_links_by_user(user, config)
   end
+  $logger.info "Finished"
 end
 
 ## end of function definitions ###
@@ -117,11 +119,11 @@ check_arguments!(options)
 
 config = SearchPocket::Utils::config_file(options[:config], options[:env])
 if config.nil?
-  puts "Error: failed to load config file."
+  $logger.error "Error: failed to load config file."
   exit
 end
 
-$logger = Logger.new(config['log_file'], 'monthly') if config['log_file']
+$logger = Logger.new(config['log_file'], 'weekly') if config['log_file']
 
 db_config = config['db']
 db = SearchPocket::Utils::sequel_connect("mysql2", db_config['username'],
@@ -132,8 +134,6 @@ db = SearchPocket::Utils::sequel_connect("mysql2", db_config['username'],
 
 Dir[File.join(File.expand_path(File.dirname(__FILE__)), "../app/models/*.rb")].each { |file| require file }
 
-$logger.info "Start retrieving links"
 retrieve_links(options, config)
-$logger.info "Finished"
 
 SearchPocket::Utils::sequel_disconnect(db)

@@ -66,8 +66,8 @@ class SearchPocketApp < Sinatra::Base
       logger.info "spawn a retrieval process for user #{user.name}"
       pid = Process.spawn("script/crawler.rb -c config/config.yml -u #{user.name} "\
                           "&& script/parser.rb -c config/config.yml "\
-                          "&& script/indexer.rb -c config/sphinx.conf",
-                   :chdir => File.expand_path(File.dirname(__FILE__)))
+                          "&& script/indexer.rb -c config/config.yml -s config/sphinx.conf",
+                   :chdir => File.expand_path(File.dirname(__FILE__)), :err => :out)
       Process.detach(pid)
     else
       user.set(login_at: DateTime.now)

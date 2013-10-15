@@ -13,6 +13,7 @@ require 'optparse'
 require 'open-uri'
 require 'readability'
 require 'logger'
+require 'timeout'
 
 require 'search_pocket'
 
@@ -60,11 +61,11 @@ check_arguments!(options)
 
 config = SearchPocket::Utils.config_file(options[:config], options[:env])
 if config.nil?
-  puts "Error: failed to load config file."
+  $logger.error "Error: failed to load config file."
   exit
 end
 
-$logger = Logger.new(config['log_file'], 'monthly') if config['log_file']
+$logger = Logger.new(config['log_file'], 'weekly') if config['log_file']
 
 db_config = config['db']
 db = SearchPocket::Utils.sequel_connect("mysql2", db_config['username'],
@@ -75,22 +76,41 @@ db = SearchPocket::Utils.sequel_connect("mysql2", db_config['username'],
 
 Dir[File.join(File.expand_path(File.dirname(__FILE__)), "../app/models/*.rb")].each { |file| require file }
 
+pool = SearchPocket::FixedThreadPool.new(5)
+
 links = Link.where(status: 0)
+$logger.info "Starting parsing links"
 links.each do |l|
-  begin
-    page = open(l.url).read
-    doc = Readability::Document.new(page)
-    l.set(content: doc.content, status: 1)
-    title = l.given_title || l.resolved_title
-    if title.nil? || title.empty?
-      l.set(resolved_title: doc.title.strip)
+  wrapper = Proc.new do |link|
+    Proc.new do
+      begin
+        timeout(180) do
+          page = open(link.url).read
+          doc = Readability::Document.new(page)
+          link.set(content: doc.content, status: 1)
+          title = link.given_title || link.resolved_title
+          if title.nil? || title.empty?
+            link.set(resolved_title: doc.title && doc.title.strip)
+          end
+          link.save
+        end
+      rescue Timeout::Error, Errno::ETIMEDOUT, Exception => e
+        $logger.error "Warning: failed to parse link: #{link.url}"
+        $logger.error e.to_s
+        link.update(status: -1)
+      end
     end
-    l.save
-  rescue Timeout::Error, Errno::ETIMEDOUT, Exception => e
-    $logger.error "Warning: failed to parse link: #{l.url}"
-    $logger.error e.to_s
-    l.update(status: -1)
+  end # end of wrapper
+
+  unless pool.execute(wrapper[l])
+    # redo after 1 second if there is no idle thread
+    sleep 1
+    redo
   end
 end
+
+pool.join
+
+$logger.info "#{links.count} links parsed"
 
 SearchPocket::Utils.sequel_disconnect(db)
