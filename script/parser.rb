@@ -79,6 +79,7 @@ Dir[File.join(File.expand_path(File.dirname(__FILE__)), "../app/models/*.rb")].e
 pool = SearchPocket::FixedThreadPool.new(5)
 
 links = Link.where(status: 0)
+count = links.count
 $logger.info "Starting parsing links"
 links.each do |l|
   wrapper = Proc.new do |link|
@@ -111,6 +112,6 @@ end
 
 pool.join
 
-$logger.info "#{links.count} links parsed"
+$logger.info "#{count} links parsed"
 
 SearchPocket::Utils.sequel_disconnect(db)
