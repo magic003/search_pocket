@@ -95,7 +95,7 @@ class SearchPocketApp < Sinatra::Base
     page = (params[:p] || 1).to_i
     per_page = 10
     if q.nil? || q.empty?
-      haml :search
+      haml :search, :locals => {:message => nil}
     else
       index = 'main'
       client = Riddle::Client.new
