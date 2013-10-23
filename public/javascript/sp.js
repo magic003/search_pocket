@@ -14,7 +14,7 @@ $(document).ready(function() {
     $('#user_session').click(showDropdown);
 
     $('#search form, #results form').submit(function(event) {
-        if($.trim($('#search .searchbox').val()).length > 0) {
+        if($.trim($('.searchbox').val()).length > 0) {
             return true;
         }
         return false;
