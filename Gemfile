@@ -11,3 +11,5 @@ gem 'omniauth-pocket'
 gem 'ruby-readability', :require => 'readability'
 
 gem 'riddle'
+
+gem 'open_uri_redirections'

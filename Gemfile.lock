@@ -32,6 +32,7 @@ GEM
     omniauth-pocket (0.1.0)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
+    open_uri_redirections (0.1.1)
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
@@ -63,6 +64,7 @@ DEPENDENCIES
   mysql2
   omniauth
   omniauth-pocket
+  open_uri_redirections
   riddle
   ruby-readability
   sequel

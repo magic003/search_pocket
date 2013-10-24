@@ -11,6 +11,7 @@ $:.unshift(File.dirname(__FILE__)+'/../lib') unless
 
 require 'optparse'
 require 'open-uri'
+require 'open_uri_redirections'
 require 'readability'
 require 'logger'
 require 'timeout'
@@ -76,7 +77,7 @@ db = SearchPocket::Utils.sequel_connect("mysql2", db_config['username'],
 
 Dir[File.join(File.expand_path(File.dirname(__FILE__)), "../app/models/*.rb")].each { |file| require file }
 
-pool = SearchPocket::FixedThreadPool.new(5)
+pool = SearchPocket::FixedThreadPool.new(20)
 
 links = Link.where(status: 0)
 count = links.count
@@ -85,16 +86,16 @@ links.each do |l|
   wrapper = Proc.new do |link|
     Proc.new do
       begin
-        timeout(180) do
-          page = open(link.url).read
-          doc = Readability::Document.new(page)
-          link.set(content: doc.content, status: 1)
-          title = link.given_title || link.resolved_title
-          if title.nil? || title.empty?
-            link.set(resolved_title: doc.title && doc.title.strip)
-          end
-          link.save
+        page = timeout(120) do
+          open(link.url, :allow_redirections => :safe).read
         end
+        doc = Readability::Document.new(page)
+        link.set(content: doc.content, status: 1)
+        title = link.given_title || link.resolved_title
+        if title.nil? || title.empty?
+          link.set(resolved_title: doc.title && doc.title.strip)
+        end
+        link.save
       rescue Timeout::Error, Errno::ETIMEDOUT, Exception => e
         $logger.error "Warning: failed to parse link: #{link.url}"
         $logger.error e.to_s
