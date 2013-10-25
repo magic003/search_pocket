@@ -87,8 +87,20 @@ links.each do |l|
     Proc.new do
       begin
         page = timeout(120) do
-          open(link.url, :allow_redirections => :safe).read
+          f = open(link.url, :allow_redirections => :safe)
+          ct = f.content_type
+          # only parse text page
+          if ct.nil? || ct.start_with?('text/')
+            f.read
+          else
+            ''
+          end
         end
+        # remove the invalid characters and change to utf-8 encoding
+        encoding = GuessHtmlEncoding.guess(page)
+        page = page.chars.select { |c| c.valid_encoding? }.join
+        page.encode!('utf-8', encoding)
+
         doc = Readability::Document.new(page)
         link.set(content: doc.content, status: 1)
         title = link.given_title || link.resolved_title
