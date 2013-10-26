@@ -50,7 +50,7 @@ class SearchPocketApp < Sinatra::Base
       end
       haml :search, :locals => {message: message}
     else # user not logged in
-      haml :index
+      haml :index, :layout => :home
     end
   end
 
