@@ -1,21 +1,6 @@
 !!! 5
 %html{lang: 'en'}
-  %head
-    %meta{charset: 'utf-8'}
-    %title SearchPocket - A Full-text Search Engine for Pocket
-    %link{rel: 'stylesheet', href: 'http://fonts.googleapis.com/css?family=Open+Sans'}
-    %link{rel: 'stylesheet', href: '/css/html5reset.css'}
-    %link{rel: 'stylesheet', href: '/css/style.css'}
-    %link{rel: 'search', type: 'application/opensearchdescription+xml',
-            title: 'SearchPocket', href: '/opensearch.xml'}
-    :javascript
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-42514836-2', 'searchpocket.info');
-        ga('send', 'pageview');
+  = haml :head, :layout => false
   %body
     = haml :header, :layout => false
     #content
