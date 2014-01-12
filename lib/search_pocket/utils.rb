@@ -1,7 +1,7 @@
 require 'yaml'
 require 'sequel'
 
-module SearchPocket ; module Utils
+module SP ; module Utils
   # Loads the specific envrionment settings for the config file.
   def self.config_file(path, env)
     yaml = YAML::load(File.open(path))

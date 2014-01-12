@@ -1,6 +1,6 @@
 require 'thread'
 
-module SearchPocket
+module SP
   # The +FixedThreadPool+ implements a thread pool with fixed number of threads.
   # The number of threads is specified when creating the instance, and doesn't
   # change during the runtime.
