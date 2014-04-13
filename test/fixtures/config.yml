@@ -1,0 +1,8 @@
+development:
+  name: development
+
+production:
+  name: production
+
+test:
+  name: test
