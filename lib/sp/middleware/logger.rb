@@ -4,6 +4,7 @@ module SP
   class Logger
     def initialize(app=nil)
       @app = app
+      @logger = nil
     end
 
     def call(env)
