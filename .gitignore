@@ -1,2 +1,5 @@
 *.swp
 tmp/
+
+config/config.yml
+config/sphinx.yml
