@@ -1,8 +1,35 @@
 development:
   name: development
+  db:
+    host: 'localhost'
+    port: 3306
+    database: ''
+    username: ''
+    password: ''
+  pocket:
+    client_id: ''
+    client_secret: ''
 
 production:
   name: production
+  db:
+    host: 'localhost'
+    port: 3306
+    database: ''
+    username: ''
+    password: ''
+  pocket:
+    client_id: ''
+    client_secret: ''
 
 test:
   name: test
+  db:
+    host: 'localhost'
+    port: 3306
+    database: ''
+    username: ''
+    password: ''
+  pocket:
+    client_id: ''
+    client_secret: ''

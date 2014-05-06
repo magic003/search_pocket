@@ -5,3 +5,4 @@ config/config.yml
 config/sphinx.yml
 
 test/fixtures/config.yml
+test/fixtures/user.yml
