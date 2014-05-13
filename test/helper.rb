@@ -39,3 +39,13 @@ def default_user
   u = yaml['user1']
   User.create({name: u['name'], token: u['token']})
 end
+
+# Get links for testing.
+def test_links
+  yaml = YAML.load(File.open(File.expand_path('../fixtures/links.yml', __FILE__)))
+  links = []
+  yaml['links'].each do |l|
+    links << Link.new(l)
+  end
+  links
+end

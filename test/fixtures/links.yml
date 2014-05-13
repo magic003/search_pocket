@@ -1,0 +1,16 @@
+links:
+  - 
+    # normal
+    url: 'http://www.laurencegellert.com/2012/08/what-is-a-full-stack-developer/'
+    given_title: 'What is a Full Stack developer?'
+  -
+    # redirection
+    url: 'http://t.cn/8sDqyIA'
+  -
+    # 404 not exists
+    url: 'http://css-tricks.com/thispagedoesntexist'
+  -
+    # blocked
+    url: 'http://twitter.com'
+
+
