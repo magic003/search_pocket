@@ -4,4 +4,5 @@ module SP
   autoload :Logger, 'sp/middleware/logger'
   autoload :Batcher, 'sp/middleware/batcher'
   autoload :PageParser, 'sp/middleware/page_parser'
+  autoload :Indexer, 'sp/middleware/indexer'
 end
