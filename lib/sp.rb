@@ -1,6 +1,7 @@
 require 'sp/utils'
 require 'sp/fixed_thread_pool'
 require 'sp/middleware'
+require 'sp/builder'
 
 require 'yaml'
 require 'sequel'
