@@ -6,4 +6,4 @@ config/sphinx.conf
 
 test/fixtures/config.yml
 test/fixtures/user.yml
-test/fixtures/sphinx.yml
+test/fixtures/sphinx.conf

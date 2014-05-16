@@ -5,7 +5,7 @@ require 'fileutils'
 require_models
 
 describe 'test indexer' do
-  SPHINX_CFG = File.expand_path('../../fixtures/sphinx.yml', __FILE__)
+  SPHINX_CFG = File.expand_path('../../fixtures/sphinx.conf', __FILE__)
   DATA_DIR = '/tmp/data'
 
   before do
