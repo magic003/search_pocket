@@ -66,9 +66,7 @@ class SearchPocketApp < Sinatra::Base
       logger.info "spawn a retrieval process for user #{user.name}"
       e = ENV['RACK_ENV'] || 'development'
       logger.info "Environment: #{e}"
-      pid = Process.spawn("script/crawler.rb -c config/config.yml -e #{e} -u #{user.name} "\
-                          "&& script/parser.rb -c config/config.yml -e #{e} "\
-                          "&& script/indexer.rb -c config/config.yml -s config/sphinx.conf -e #{e}",
+      pid = Process.spawn("script/bootstrap.rb -c config/config.yml -s config/sphinx.conf -e #{e} -u #{user.name} -b",
                    :chdir => File.expand_path(File.dirname(__FILE__)), :err => :out)
       Process.detach(pid)
     else

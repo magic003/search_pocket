@@ -2,7 +2,7 @@
 tmp/
 
 config/config.yml
-config/sphinx.yml
+config/sphinx.conf
 
 test/fixtures/config.yml
 test/fixtures/user.yml
