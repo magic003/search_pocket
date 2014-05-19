@@ -19,6 +19,8 @@ module SP
         end
         logger.info 'Finish retrieving links.'
       end
+
+      @app.call(env) if @app
     end
 
     private
@@ -62,7 +64,6 @@ module SP
         end
 
         env['sp.links'] = links
-        @app.call(env) if @app
 
         user.update({since: json['since']})
         logger.info "#{links.size} links saved"
