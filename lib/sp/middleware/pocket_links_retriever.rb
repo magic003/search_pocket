@@ -10,7 +10,7 @@ module SP
 
     def call(env)
       users = env['sp.users']
-      env['sp.links'] = []  # default
+      env['sp.links'] = [] if env['sp.links'].nil? # default
       if users
         logger = env['sp.logger']
         logger.info 'Start retrieving links...'
@@ -63,7 +63,7 @@ module SP
           end
         end
 
-        env['sp.links'] = links
+        env['sp.links'].concat(links)
 
         user.update({since: json['since']})
         logger.info "#{links.size} links saved"

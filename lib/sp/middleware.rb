@@ -5,4 +5,5 @@ module SP
   autoload :Batcher, 'sp/middleware/batcher'
   autoload :PageParser, 'sp/middleware/page_parser'
   autoload :Indexer, 'sp/middleware/indexer'
+  autoload :LegacyLinksLoader, 'sp/middleware/legacy_links_loader'
 end
