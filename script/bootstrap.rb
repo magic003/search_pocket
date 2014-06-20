@@ -85,6 +85,7 @@ Dir[File.join(File.expand_path(File.dirname(__FILE__)), "../app/models/*.rb")].e
 app = SP::Builder.new do
   use SP::Config, options[:config]
   use SP::Logger
+  use SP::LegacyLinksLoader unless options[:bootstrap]
   use SP::PocketLinksRetriever
   use SP::Batcher, 50 if options[:bootstrap]
   use SP::PageParser
